@@ -23,6 +23,10 @@ public class Main extends JPanel {
 
     private AIPlayer aiPlayer; // AI Player
 
+    private int crossWins = 0;
+    private int noughtWins = 0;
+
+
     /** Constructor to setup the UI and game components */
     public Main() {
         // Add mouse listener for player interaction
@@ -121,8 +125,20 @@ public class Main extends JPanel {
             statusBar.setForeground(Color.RED);
             statusBar.setText((currentState == State.CROSS_WON) ? "'Chick' Won! Click to play again." : "'Dog' Won (AI)! Click to play again.");
             SoundEffect.game_over.play();
-
         }
+        statusBar.setText(String.format("'X' Wins: %d | 'O' Wins: %d | %s",
+                crossWins, noughtWins, (currentState == State.PLAYING ?
+                        ((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn") :
+                        (currentState == State.DRAW ? "It's a Draw! Click to play again." :
+                                ((currentState == State.CROSS_WON) ? "'X' Won!" : "'O' Won!")))));
+
+
+        if (currentState == State.CROSS_WON) {
+            crossWins++;
+        } else if (currentState == State.NOUGHT_WON) {
+            noughtWins++;
+        }
+
     }
 
     /** Main method to launch the game */
