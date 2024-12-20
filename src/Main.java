@@ -30,12 +30,23 @@ public class Main extends JPanel {
     private State currentState; // Current state of the game
     private Seed currentPlayer; // Current player
     private JLabel statusBar; // Status bar to display messages
+    private int crossWins = 0;
+    private int noughtWins = 0;
+
 
     /**
      * Constructor to setup the UI and game components
      */
     public Main() {
         // Add mouse listener for player interaction
+//        String[] options = {"Player vs Player", "Player vs AI"};
+//        int choice = JOptionPane.showOptionDialog(null, "Choose game mode:", "Game Mode",
+//                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+//        isPlayerVsAI = (choice == 1); // If "Player vs AI" is selected
+//
+//        if (isPlayerVsAI) {
+//            aiPlayer = new AIPlayer(Seed.NOUGHT); // AI is 'O'
+//        }
         super.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,7 +105,25 @@ public class Main extends JPanel {
                 board.cells[row][col].content = Seed.NO_SEED;
             }
         }
-        currentPlayer = Seed.CROSS;
+        showStartingPlayerDialog();
+    }
+    private void showStartingPlayerDialog() {
+        String[] options = {"X", "O"};
+        int choice = JOptionPane.showOptionDialog(this,
+                "Who will start first?",
+                "Choose Starting Player",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]); // Default selection is "X"
+
+        // Set the starting player based on the choice
+        if (choice == 0) { // If player chooses "X"
+            currentPlayer = Seed.CROSS;
+        } else { // If player chooses "O"
+            currentPlayer = Seed.NOUGHT;
+        }
         currentState = State.PLAYING;
     }
 
@@ -122,7 +151,20 @@ public class Main extends JPanel {
             statusBar.setText((currentState == State.CROSS_WON) ? "'X' Won!" : "'O' Won!");
             SoundEffect.game_over.play();
         }
+        statusBar.setText(String.format("'X' Wins: %d | 'O' Wins: %d | %s",
+                crossWins, noughtWins, (currentState == State.PLAYING ?
+                        ((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn") :
+                        (currentState == State.DRAW ? "It's a Draw! Click to play again." :
+                                ((currentState == State.CROSS_WON) ? "'X' Won!" : "'O' Won!")))));
+
+
+        if (currentState == State.CROSS_WON) {
+            crossWins++;
+        } else if (currentState == State.NOUGHT_WON) {
+            noughtWins++;
+        }
     }
+
 
     /**
      * Main method to launch the game
