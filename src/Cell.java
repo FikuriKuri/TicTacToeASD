@@ -1,4 +1,15 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #1
+ * 1 - 5026231105 - Mirza Fathi Taufiqurrahman
+ * 2 - 5026231209 - Adityo Rafi Wardhana
+ * 3 - 5026231198 - Muhammad Fikri Khalilullah
+ */
+
 import java.awt.*;
+
 /**
  * The Cell class models each individual cell of the game board.
  */
